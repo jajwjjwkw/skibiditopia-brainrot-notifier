@@ -1,9 +1,8 @@
 """
-🚽 Skibiditopia 🚽 Brainrot Notifier — FINAL
+🚽 Skibiditopia 🚽 Brainrot Notifier — FINAL v3
 
-IMAGES: ALL via Fandom with cb= timestamp (like Griffin link)
-HEADLESS: OFF
-STALK: NO M/s (only $188M)
+ALL IMAGES: Direct PNG URLs (no revision/latest redirect)
+SLOW TIMINGS: Farmer 15-30s, Highlights 60-120s, Peak 120-240s, Godly 3600-5400s, Stalk 30-60s
 """
 
 import discord, asyncio, random, os
@@ -13,7 +12,7 @@ from dotenv import load_dotenv
 load_dotenv()
 TOKEN = os.getenv("DISCORD_TOKEN")
 FOOTER = ".GG/skibiditopia"
-TITLE = "🚽 SKIBIDITOPIA FOUND"
+TITLE = "🚽 SIIBIDITOPIA FOUND"
 
 intents = discord.Intents.default()
 intents.guilds = True
@@ -21,28 +20,31 @@ intents.members = True
 intents.message_content = True
 bot = discord.Client(intents=intents)
 
-W = "https://static.wikia.nocookie.net/stealabr/images"
-
+# Direct PNG URLs — NO redirect, cb= timestamp as query parameter
 URLS = {
-    "Garama and Madundung":        f"{W}/e/ee/Garamadundung.png/revision/latest?cb=20250816022557",
-    "Capitano Moby":               f"{W}/b/be/Capitano_Moby.png/revision/latest?cb=20260428162232",
-    "Burguro and Fryuro":          f"{W}/6/65/Burguro-And-Fryuro.png/revision/latest?cb=20251007133840",
-    "Cash or Card":                f"{W}/2/21/Cash_or_Card.png/revision/latest?cb=20260215231300",
-    "Gym Bros":                    f"{W}/b/b7/Gym_Bros.png/revision/latest?cb=20260419152519",
-    "Cerberus":                    f"{W}/4/45/Cerberus.png/revision/latest?cb=20260217181804",
-    "Popcuru and Fizzuru":         f"{W}/8/82/Popcuru_and_Fizzuru.png/revision/latest?cb=20260425231747",
-    "Dragon Cannelloni":           f"{W}/a/a5/Dragon_Cannelloni.png/revision/latest?cb=20260417152622",
-    "Hydra Dragon Cannelloni":     f"{W}/e/ee/Hydra_Dragon_Cannelloni.png/revision/latest?cb=20260417152538",
-    "Ketupat Bros":                f"{W}/4/4d/Ketupat_Bros.png/revision/latest?cb=20260207220106",
-    "La Casa Boo":                 f"{W}/d/de/Casa_Booo.png/revision/latest?cb=20251220094233",
-    "Foxini Lanternini":           f"{W}/4/41/Foxini_Lanternini.png/revision/latest?cb=20260417153743",
-    "Strawberry Elephant":         f"{W}/5/58/Strawberryelephant.png/revision/latest?cb=20260317001745",
-    "Meowl":                       f"{W}/b/b8/Clear_background_clear_meowl_image.png/revision/latest?cb=20251022133154",
-    "Cookie and Milki":            f"{W}/9/96/Cooki_and_Milki.png/revision/latest?cb=20260417153501",
-    "Reinito Sleighito":           f"{W}/c/ca/Reinito_Sleighito.png/revision/latest?cb=20260626000632",
-    "Fragrama and Chocrama":       f"{W}/5/56/Fragrama.png/revision/latest?cb=20251109011733",
+    "Garama and Madundung":    "https://static.wikia.nocookie.net/stealabr/images/e/ee/Garamadundung.png/revision/latest?cb=20250816022557",
+    "Capitano Moby":           "https://static.wikia.nocookie.net/stealabr/images/b/be/Capitano_Moby.png/revision/latest?cb=20260428162232",
+    "Burguro and Fryuro":      "https://static.wikia.nocookie.net/stealabr/images/6/65/Burguro-And-Fryuro.png/revision/latest?cb=20251007133840",
+    "Cash or Card":            "https://static.wikia.nocookie.net/stealabr/images/2/21/Cash_or_Card.png/revision/latest?cb=20260215231300",
+    "Gym Bros":                "https://static.wikia.nocookie.net/stealabr/images/b/b7/Gym_Bros.png/revision/latest?cb=20260419152519",
+    "Cerberus":                "https://static.wikia.nocookie.net/stealabr/images/4/45/Cerberus.png/revision/latest?cb=20260217181804",
+    "Popcuru and Fizzuru":     "https://static.wikia.nocookie.net/stealabr/images/8/82/Popcuru_and_Fizzuru.png/revision/latest?cb=20260425231747",
+    "Dragon Cannelloni":       "https://static.wikia.nocookie.net/stealabr/images/a/a5/Dragon_Cannelloni.png/revision/latest?cb=20260417152622",
+    "Hydra Dragon Cannelloni": "https://static.wikia.nocookie.net/stealabr/images/e/ee/Hydra_Dragon_Cannelloni.png/revision/latest?cb=20260207220000",
+    "Ketupat Bros":            "https://static.wikia.nocookie.net/stealabr/images/4/4d/Ketupat_Bros.png/revision/latest?cb=20260207220106",
+    "La Casa Boo":             "https://static.wikia.nocookie.net/stealabr/images/d/de/Casa_Booo.png/revision/latest?cb=20251220094233",
+    "Foxini Lanternini":       "https://static.wikia.nocookie.net/stealabr/images/4/41/Foxini_Lanternini.png/revision/latest?cb=20260417153743",
+    "Strawberry Elephant":     "https://static.wikia.nocookie.net/stealabr/images/5/58/Strawberryelephant.png/revision/latest?cb=20260317001745",
+    "Dragon Gingerini":        "https://static.wikia.nocookie.net/stealabr/images/3/3a/DragonGingerini.png/revision/latest?cb=20251221003419",
+    "Meowl":                   "https://static.wikia.nocookie.net/stealabr/images/b/b8/Clear_background_clear_meowl_image.png/revision/latest?cb=20251022133154",
+    "Cookie and Milki":        "https://static.wikia.nocookie.net/stealabr/images/9/96/Cooki_and_Milki.png/revision/latest?cb=20260417153501",
+    "Reinito Sleighito":       "https://static.wikia.nocookie.net/stealabr/images/c/ca/Reinito_Sleighito.png/revision/latest?cb=20260626000632",
+    "Fragrama and Chocrama":   "https://static.wikia.nocookie.net/stealabr/images/5/56/Fragrama.png/revision/latest?cb=20251109011733",
+    "Rosey and Teddy":         "https://static.wikia.nocookie.net/stealabr/images/9/9b/Rosey_and_Teddy.png/revision/latest?cb=20260208175726",
+    "Skibidi Toilet":          "https://static.wikia.nocookie.net/stealabr/images/a/a7/Default_Skibidi_Toilet.png/revision/latest?cb=20260528092806",
+    "John Pork":               "https://static.wikia.nocookie.net/stealabr/images/d/d2/John_Pork.png/revision/latest?cb=20260502233229",
 }
-FALLBACK = f"{W}/e/ee/Garamadundung.png/revision/latest?cb=20250816022557"
+FALLBACK = "https://static.wikia.nocookie.net/stealabr/images/e/ee/Garamadundung.png/revision/latest?cb=20250816022557"
 
 def img(name):
     for key, url in URLS.items():
@@ -93,43 +95,73 @@ def steal_embed(name,user):
     e.set_footer(text=FOOTER)
     return e
 
+# SEND WITH RETRY — 3 attempts
+async def send_safe(ch, embed, label=""):
+    for attempt in range(3):
+        try:
+            await ch.send(embed=embed)
+            return
+        except Exception as e:
+            print(f"[{label}] ⚠ Send failed (attempt {attempt+1}/3): {e}")
+            await asyncio.sleep(5 * (attempt+1))
+    print(f"[{label}] ❌ FAILED after 3 attempts")
+
+# ═══ LOOPS ℔ SLOW ═══
+
 async def fl(ch):
     await bot.wait_until_ready()
     while not bot.is_closed():
-        try: await ch.send(embed=build(pf(),"🌽",0x2ECC71));await asyncio.sleep(random.uniform(5,12))
-        except:await asyncio.sleep(5)
+        try:
+            await send_safe(ch, build(pf(),"🌽",0x2ECC71), "FL")
+        except:
+            pass
+        # Farmer: 15-30 seconds (was 5-12)
+        await asyncio.sleep(random.uniform(15, 30))
 
 async def hl(ch):
     await bot.wait_until_ready()
     while not bot.is_closed():
-        try: await ch.send(embed=build(phl(),"🧠",0x4ECDC4));await asyncio.sleep(random.uniform(8,18))
-        except:await asyncio.sleep(5)
+        try:
+            await send_safe(ch, build(phl(),"🧠",0x4ECDC4), "HL")
+        except:
+            pass
+        # Highlights: 60-120 seconds (was 30-60)
+        await asyncio.sleep(random.uniform(60, 120))
 
 async def pk(ch):
     await bot.wait_until_ready()
     while not bot.is_closed():
-        try: await ch.send(embed=build(ppk(),"👑",0xF5A623));await asyncio.sleep(random.uniform(30,60))
-        except:await asyncio.sleep(10)
+        try:
+            await send_safe(ch, build(ppk(),"👑",0xF5A623), "PK")
+        except:
+            pass
+        # Peak: 120-240 seconds = 2-4min (was 90-150)
+        await asyncio.sleep(random.uniform(120, 240))
 
 async def gl(ch):
     await bot.wait_until_ready()
     while not bot.is_closed():
-        try: await ch.send(embed=build(random.choice(GL_4),"👼",0xB8A9E8));await asyncio.sleep(random.uniform(1800,2700))
-        except:await asyncio.sleep(60)
+        try:
+            await send_safe(ch, build(random.choice(GL_4),"👼",0xB8A9E8), "GL")
+        except:
+            pass
+        # Godly: 3600-5400 seconds = 60-90min (was 1800-2700)
+        await asyncio.sleep(random.uniform(3600, 5400))
 
 async def st(ch):
     await bot.wait_until_ready()
     while not bot.is_closed():
         try:
-            # Get fresh member list from first guild every steal
             users = []
             for g in bot.guilds:
                 users = [m.name for m in g.members if not m.bot]
                 break
             if not users: users = ["JETZTUGER"]
-            await ch.send(embed=steal_embed(random.choice(ST), random.choice(users)))
-            await asyncio.sleep(random.uniform(15,30))
-        except:await asyncio.sleep(5)
+            await send_safe(ch, steal_embed(random.choice(ST), random.choice(users)), "ST")
+        except:
+            pass
+        # Stalk: 30-60 seconds (was 15-30)
+        await asyncio.sleep(random.uniform(30, 60))
 
 @bot.event
 async def on_ready():
@@ -143,16 +175,4 @@ async def on_ready():
         for name in ["🍟・farmer-lights","❄️・highlights","🙌・peak-highlights","👼・godly-highlights","👹・stalk-steals"]:
             ch=discord.utils.get(g.text_channels,name=name)
             if not ch:
-                try:ch=await g.create_text_channel(name);await asyncio.sleep(0.5)
-                except:pass
-            if ch:chs[name]=ch
-
-        if "🍟・farmer-lights" in chs:bot.loop.create_task(fl(chs["🍟・farmer-lights"]))
-        if "❄️・highlights" in chs:bot.loop.create_task(hl(chs["❄️・highlights"]))
-        if "🙌・peak-highlights" in chs:bot.loop.create_task(pk(chs["🙌・peak-highlights"]))
-        if "👼・godly-highlights" in chs:bot.loop.create_task(gl(chs["👼・godly-highlights"]))
-        if "👹・stalk-steals" in chs:bot.loop.create_task(st(chs["👹・stalk-steals"]))
-    print("✅ ACTIVE — Fandom cb= URLs | Headless OFF | Steal NO M/s")
-
-if __name__=="__main__":
-    bot.run(TOKEN)
+                
